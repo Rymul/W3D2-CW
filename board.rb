@@ -81,6 +81,20 @@ class Board
         end
     end
 
+    def won?
+        @grid.all? { |row| row.all? { |card| card.visibility }}
+    end
+
+    def reveal(guessed_pos)
+        current_card = self[guessed_pos]
+        if current_card.visibility == false
+            current_card.reveal
+            return current_card.face_val
+        end
+        nil
+    end
+
+
 
 end
 
