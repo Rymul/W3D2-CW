@@ -7,12 +7,46 @@ class Board
 
     def initialize(dim)
         @grid = Array.new(dim) {Array.new(dim)}
+            if (dim > 6) && (dim % 2 != 0)
+                raise 'Invalid dimension'
+            end
+        @dim = dim
+        # @game_deck = self.make_deck
     end
 
+    def make_deck
+        hash = Hash.new {|h, k| h[k] = 2}
+
+        deck_array = @@deck.sample(@dim * @dim / 2)
+
+        deck_array.each do |face|
+            hash[face]
+        end
+
+        hash
+    end
+
+    # def empty?(pos)
+    #     self[pos] == nil
+    # end
+
     def populate
-        (0...@grid.length).each do |i|
-            (0...@grid.length).each do |j|
-                self[[i, j]] = Card.new(@@deck.sample)
+        validpos = []
+        (0...@dim).each do |i|
+            (0...@dim).each do |j|
+                validpos << [i, j]
+            end
+        end
+        hash = self.make_deck
+
+        hash.each do |k, v|
+            while v > 0
+                pos = validpos.sample
+                validpos.delete(pos)
+                # if self.empty?(pos)
+                    self[pos] = Card.new(k)
+                    v -= 1
+                # end
             end
         end
         true
@@ -31,6 +65,19 @@ class Board
     def hidden_grid
         @grid.map do |subarr|
             p subarr.map { |card| card.face_val }.join(' ')
+        end
+    end
+
+    def render
+        @grid.map do |subarr|
+            p subarr.map { |card| card.visibility ? card.face_val : "X" }.join(' ')
+            # p subarr.map do |card|
+            #     if(card.visibility)
+            #         card.face_val
+            #     else
+            #         "X"
+            #     end
+            # end.join(' ')
         end
     end
 

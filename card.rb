@@ -1,5 +1,5 @@
 class Card
-    attr_reader :face_val
+    attr_reader :face_val, :visibility
     def initialize(face_val)
         @face_val = face_val
         @visibility = false
