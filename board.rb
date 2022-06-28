@@ -7,7 +7,7 @@ class Board
 
     def initialize(dim)
         @grid = Array.new(dim) {Array.new(dim)}
-            if (dim > 6) && (dim % 2 != 0)
+            if (dim > 6) || (dim % 2 != 0)
                 raise 'Invalid dimension'
             end
         @dim = dim
@@ -69,8 +69,9 @@ class Board
     end
 
     def render
+        system("clear")
         @grid.map do |subarr|
-            p subarr.map { |card| card.visibility ? card.face_val : "X" }.join(' ')
+            p subarr.map { |card| card.visibility ? card.face_val : "_" }.join(' ')
             # p subarr.map do |card|
             #     if(card.visibility)
             #         card.face_val
@@ -93,9 +94,6 @@ class Board
         end
         nil
     end
-
-
-
 end
 
 
