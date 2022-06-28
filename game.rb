@@ -1,20 +1,21 @@
 require_relative "board.rb"
 require_relative "card.rb"
+require_relative "human_player.rb"
 require "byebug"
 
 class Game 
 
     def initialize(dim)
         @board = Board.new(dim)
-        @previous_guess_pos = nil    
+        @previous_guess_pos = nil
+        @human_player = HumanPlayer.new 
     end
 
     def play
         @board.populate
         while @board.won? == false
             @board.render
-            puts "Enter a position for example '0 0'"
-            user_input = gets.chomp.split(' ')
+            user_input = @human_player.prompt("first")
             @previous_guess_pos = user_input.map(&:to_i)
             previous_guess = @board.reveal(@previous_guess_pos)
             @board.render
@@ -24,8 +25,7 @@ class Game
     end
 
     def make_guess(previous_guess)
-        puts "Enter a second position for example '0 0'"
-        user_input = gets.chomp.split(' ')
+        user_input = @human_player.prompt("second")
         pos2 = user_input.map(&:to_i)
         current_guess = @board.reveal(pos2)
         current_card = @board[pos2]
