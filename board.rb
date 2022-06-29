@@ -30,13 +30,19 @@ class Board
     #     self[pos] == nil
     # end
 
-    def populate
+    def self.gen_valid_arr(dim)
         validpos = []
-        (0...@dim).each do |i|
-            (0...@dim).each do |j|
+        (0...dim).each do |i|
+            (0...dim).each do |j|
                 validpos << [i, j]
             end
         end
+        validpos
+    end
+
+
+    def populate
+        validpos = Board.gen_valid_arr(@dim)
         hash = self.make_deck
 
         hash.each do |k, v|
